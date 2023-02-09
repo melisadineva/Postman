@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "e6241338-5d19-4994-802c-863f3123d593",
+		"name": "GitHub_Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25596654"
+	},
+	"item": [
+		{
+			"name": "Issues",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "GET_Single_Issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Check status code\", function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Issue number is correct\", function(){\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.number, \"Number property\").eql(1);\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Issue is open\", function() {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.state).to.equal(\"open\");\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Issue was created by the correct user\", function() {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.user.login, \"Creator\").to.eql(\"melisadineva\")\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues/1",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_Single_Issue_Labels",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () \r",
+											"{\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Check status\", function()\r",
+											"{\r",
+											"    pm.expect(pm.response.status).equals(\"OK\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues/1/labels",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues",
+										"1",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_All_Issues",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Check if response is in an array of issues\"), function ()\r",
+											"{\r",
+											"  const body = pm.response.json();\r",
+											"  console.log(\"BODY\", body);\r",
+											"  pm.expect(Array.isArray(body));\r",
+											"\r",
+											"  for (let item of body) \r",
+											"  {\r",
+											"      pm.expect(typeof(item.title)).equals(\"string\");\r",
+											"      pm.expect(typeof(item.number)).equal(\"number\");\r",
+											"      pm.expect(item.number, \"Issue number property\").is.greaterThan(777);\r",
+											"  }\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Create_Issue",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "melisadineva",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\" : \"Fourth issue\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Issue_With_Lables",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "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",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "melisadineva",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Issue with labels\" ,\r\n    \"labels\": \r\n    [\r\n        \"bug\",\r\n        \"priority: critical\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create_Issue_Missing_Title",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title1\" : \"Fourth issue\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman/issues",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman",
+										"issues"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "GET_Repos",
+					"item": [
+						{
+							"name": "GET_All_Repos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/users/melisadineva/repos",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"users",
+										"melisadineva",
+										"repos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_Single_Repo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Check repo name\", function() \r",
+											"{\r",
+											"    const body = pm.response.json();\r",
+											"    pm.expect(body.name, \"Name property\").equals(\"Postman\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/melisadineva/Postman",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"melisadineva",
+										"Postman"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_All_Repo_Commits",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.github.com/repos/testnakov/softuniada-2016/commits",
+									"protocol": "https",
+									"host": [
+										"api",
+										"github",
+										"com"
+									],
+									"path": [
+										"repos",
+										"testnakov",
+										"softuniada-2016",
+										"commits"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "basic"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
